@@ -1,3 +1,6 @@
+import org.codehaus.groovy.tools.shell.util.Logger.io
+import org.gradle.internal.impldep.org.bouncycastle.crypto.tls.ConnectionEnd.client
+import org.jetbrains.kotlin.gradle.dsl.Coroutines
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
@@ -20,8 +23,11 @@ repositories {
 }
 
 dependencies {
+    implementation("io.ktor:ktor-client-cio:1.2.4")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.2")
     implementation(Libs.orchidcore)
     implementation(Libs.kotlin_stdlib)
+    implementation(kotlin("stdlib-jdk8"))
 }
 
 tasks.withType<KotlinCompile> {

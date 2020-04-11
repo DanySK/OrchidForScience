@@ -6,6 +6,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 plugins {
     `maven-publish`
     `signing`
+    jacoco
     kotlin("jvm") version Versions.org_jetbrains_kotlin
     id("de.fayard.buildSrcVersions") version Versions.de_fayard_buildsrcversions_gradle_plugin
     id ("org.danilopianini.git-sensitive-semantic-versioning") version Versions.org_danilopianini_git_sensitive_semantic_versioning_gradle_plugin
@@ -23,8 +24,7 @@ repositories {
 }
 
 dependencies {
-    implementation("io.ktor:ktor-client-cio:1.2.4")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.2")
+//    implementation("io.ktor:ktor-client-cio:1.2.4")
     implementation(Libs.orchidcore)
     implementation(Libs.kotlin_stdlib)
     implementation(kotlin("stdlib-jdk8"))

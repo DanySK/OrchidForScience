@@ -1,16 +1,10 @@
-import org.codehaus.groovy.tools.shell.util.Logger.io
-import org.gradle.internal.impldep.org.bouncycastle.crypto.tls.ConnectionEnd.client
-import org.jetbrains.kotlin.gradle.dsl.Coroutines
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-    `maven-publish`
-    `signing`
     jacoco
-    kotlin("jvm") version Versions.org_jetbrains_kotlin
-    id("de.fayard.buildSrcVersions") version Versions.de_fayard_buildsrcversions_gradle_plugin
-    id ("org.danilopianini.git-sensitive-semantic-versioning") version Versions.org_danilopianini_git_sensitive_semantic_versioning_gradle_plugin
-    id("org.danilopianini.publish-on-central") version Versions.org_danilopianini_publish_on_central_gradle_plugin
+    kotlin("jvm")
+    id ("org.danilopianini.git-sensitive-semantic-versioning")
+    id("org.danilopianini.publish-on-central")
 }
 
 gitSemVer {
@@ -20,14 +14,12 @@ gitSemVer {
 repositories {
     mavenCentral()
     jcenter()
-    maven(url = "https://jitpack.io")
 }
 
 dependencies {
-//    implementation("io.ktor:ktor-client-cio:1.2.4")
-    implementation(Libs.orchidcore)
-    implementation(Libs.kotlin_stdlib)
     implementation(kotlin("stdlib-jdk8"))
+    implementation("io.github.javaeden.orchid:OrchidCore:_")
+    implementation("org.danilopianini:khttp:_")
 }
 
 tasks.withType<KotlinCompile> {

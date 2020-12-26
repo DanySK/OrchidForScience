@@ -3,14 +3,7 @@ package org.danilopianini.orchidforscience
 import com.eden.orchid.api.compilers.TemplateTag
 import com.eden.orchid.api.registration.OrchidModule
 import com.eden.orchid.utilities.addToSet
-import io.ktor.client.HttpClient
-import io.ktor.client.request.get
-import io.ktor.client.request.header
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.async
-import kotlinx.coroutines.future.asCompletableFuture
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
+import khttp.get
 
 class ScienceModule : OrchidModule() {
 
@@ -22,18 +15,23 @@ class ScienceModule : OrchidModule() {
 
 fun main() {
     println("ciao")
-    HttpClient().use {
-        runBlocking {
-            println(it.get<String>("https://doi.org/10.1126/science.169.3946.635") {
-                header("Accept", "text/x-bibliography;q=1.0; style=harvard3")
+    println(get(
+        "https://doi.org/10.1126/science.169.3946.635",
+        headers = mapOf("Accept" to "text/x-bibliography;q=1.0; style=apa")
+    ).content.decodeToString())
+//    KHTTO
+//    HttpClient().use {
+//        runBlocking {
+//            println(it.get<String>("https://doi.org/10.1126/science.169.3946.635") {
+//                header("Accept", "text/x-bibliography;q=1.0; style=harvard3")
 //                headers {
 //                    clear()
 //                    appendAll("My-Custom-Header", listOf("HeaderValue1", "HeaderValue2"))
 //                }
-            })
-        }
-    }
-    println("Done")
+//            })
+//        }
+//    }
+//    println("Done")
 //    val wiki = GlobalScope.async {
 //        val htmlContent = client.get<String>("https://en.wikipedia.org/wiki/Main_Page")
 //        println(htmlContent)

@@ -12,21 +12,21 @@ class TestDoiToCitation : FreeSpec(
             return this()
         }
         "default settings should work" {
-            execution() shouldBe """
+            execution() shouldBeIgnoringWhitespace """
                 <a href="https://doi.org/10.1057/jos.2012.27">Pianini, D., Montagna, S., & Viroli, M. (2013).
                 Chemical-oriented simulation of computational systems with ALCHEMIST.
                 Journal of Simulation, 7(3), 202–215. doi:10.1057/jos.2012.27</a>
-            """.trimIndent().replace("\n", " ")
+            """.trimIndent()
         }
         "links should be removable" {
-            execution { link = false } shouldBe """
+            execution { link = false } shouldBeIgnoringWhitespace """
                 Pianini, D., Montagna, S., & Viroli, M. (2013).
                 Chemical-oriented simulation of computational systems with ALCHEMIST.
                 Journal of Simulation, 7(3), 202–215. doi:10.1057/jos.2012.27
-            """.trimIndent().replace("\n", " ")
+            """.trimIndent()
         }
         "bibtex should work" {
-            execution { link = false; type = "bibtex" } shouldBe """
+            execution { link = false; type = "bibtex" } shouldBeIgnoringWhitespace """
                 @article{Pianini_2013,<br>
                  &nbsp;&nbsp;doi = {10.1057/jos.2012.27},<br>
                  &nbsp;&nbsp;url = {https://doi.org/10.1057%2Fjos.2012.27},<br>
@@ -43,4 +43,12 @@ class TestDoiToCitation : FreeSpec(
             """.trimIndent()
         }
     }
-)
+
+) {
+    companion object {
+        private val whitespace = "\\s".toRegex()
+        private infix fun String.shouldBeIgnoringWhitespace(other: String) {
+            this.replace(whitespace, "") shouldBe other.replace(whitespace, "")
+        }
+    }
+}

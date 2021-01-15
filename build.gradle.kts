@@ -73,7 +73,7 @@ group = "org.danilopianini"
 publishOnCentral {
     projectDescription = "An Orchid module with utilities for scientific websites"
     projectLongName = "OrchidForScience"
-    repository("https://maven.pkg.github.com/danysk/orchidforscience") {
+    repository("https://maven.pkg.github.com/DanySK/OrchidForScience".toLowerCase()) {
         user = "DanySK"
         password = System.getenv("GITHUB_TOKEN")
     }

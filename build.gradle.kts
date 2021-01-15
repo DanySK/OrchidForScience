@@ -1,9 +1,13 @@
+import org.danilopianini.gradle.mavencentral.mavenCentral
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     jacoco
     kotlin("jvm")
-    id ("org.danilopianini.git-sensitive-semantic-versioning")
+    id("io.gitlab.arturbosch.detekt")
+    id("org.jetbrains.dokka")
+    id("org.jlleitschuh.gradle.ktlint")
+    id("org.danilopianini.git-sensitive-semantic-versioning")
     id("org.danilopianini.publish-on-central")
 }
 
@@ -17,13 +21,44 @@ repositories {
 }
 
 dependencies {
+    detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:_")
     implementation(kotlin("stdlib-jdk8"))
     implementation("io.github.javaeden.orchid:OrchidCore:_")
+    implementation("org.apache.commons:commons-lang3:_")
     implementation("org.danilopianini:khttp:_")
+    testImplementation("io.kotest:kotest-runner-junit5:_")
+    testImplementation("io.kotest:kotest-assertions-core-jvm:_")
 }
 
 tasks.withType<KotlinCompile> {
     kotlinOptions.jvmTarget = JavaVersion.VERSION_1_8.toString()
+    kotlinOptions.allWarningsAsErrors = true
+}
+
+tasks.test {
+    useJUnitPlatform()
+    testLogging {
+        showStandardStreams = true
+        exceptionFormat = org.gradle.api.tasks.testing.logging.TestExceptionFormat.FULL
+    }
+}
+
+tasks.jacocoTestReport {
+    reports {
+        // Used by Codecov.io
+        xml.isEnabled = true
+    }
+}
+
+detekt {
+    failFast = true
+    buildUponDefaultConfig = true
+    config = files("$projectDir/config/detekt/detekt.yml")
+    reports {
+        html.enabled = true
+        xml.enabled = true
+        txt.enabled = true
+    }
 }
 
 if (System.getenv("CI") == true.toString()) {
@@ -35,6 +70,18 @@ if (System.getenv("CI") == true.toString()) {
 }
 
 group = "org.danilopianini"
+publishOnCentral {
+    projectDescription = "An Orchid module with utilities for scientific websites"
+    projectLongName = "OrchidForScience"
+    repository("https://maven.pkg.github.com/danysk/orchidforscience") {
+        user = "DanySK"
+        password = System.getenv("GITHUB_TOKEN")
+    }
+    repository("https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/", "CentralS01") {
+        user = mavenCentral().user()
+        password = mavenCentral().password()
+    }
+}
 publishing {
     publications {
         withType<MavenPublication> {

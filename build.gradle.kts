@@ -1,5 +1,6 @@
 import org.danilopianini.gradle.mavencentral.mavenCentral
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import org.jetbrains.kotlin.config.KotlinCompilerVersion.VERSION as KOTLIN_VERSION
 
 plugins {
     jacoco
@@ -28,6 +29,16 @@ dependencies {
     implementation("org.danilopianini:khttp:_")
     testImplementation("io.kotest:kotest-runner-junit5:_")
     testImplementation("io.kotest:kotest-assertions-core-jvm:_")
+}
+
+// Enforce Kotlin version coherence
+configurations.all {
+    resolutionStrategy.eachDependency {
+        if (requested.group == "org.jetbrains.kotlin" && requested.name.startsWith("kotlin")) {
+            useVersion(KOTLIN_VERSION)
+            because("All Kotlin modules should use the same version, and compiler uses $KOTLIN_VERSION")
+        }
+    }
 }
 
 tasks.withType<KotlinCompile> {

@@ -68,7 +68,7 @@ class DoiToCitation : TemplateFunction("cite", true) {
      * Zero-argument version of [apply], to ease testing.
      */
     operator fun invoke(): String {
-        val realType = when (type.toLowerCase()) {
+        val realType = when (type.lowercase()) {
             "bibtex" -> "application/x-bibtex"
             "bibliography" -> "text/x-bibliography"
             else -> type

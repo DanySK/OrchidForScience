@@ -11,10 +11,6 @@ plugins {
     id("org.danilopianini.publish-on-central")
 }
 
-gitSemVer {
-    version = computeGitSemVer() // THIS IS MANDATORY, AND MUST BE LAST IN BLOCK
-}
-
 repositories {
     mavenCentral()
     jcenter()

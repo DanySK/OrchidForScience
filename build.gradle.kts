@@ -4,9 +4,8 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 plugins {
     jacoco
     kotlin("jvm")
-    id("io.gitlab.arturbosch.detekt")
+    id("kotlin-qa")
     id("org.jetbrains.dokka")
-    id("org.jlleitschuh.gradle.ktlint")
     id("org.danilopianini.git-sensitive-semantic-versioning")
     id("org.danilopianini.publish-on-central")
 }
@@ -19,7 +18,6 @@ repositories {
 val additionalTools: Configuration by configurations.creating
 
 dependencies {
-    detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:_")
     implementation(kotlin("stdlib-jdk8"))
     implementation("io.github.javaeden.orchid:OrchidCore:_")
     implementation("org.apache.commons:commons-lang3:_")
@@ -31,7 +29,6 @@ dependencies {
 
 tasks.withType<KotlinCompile> {
     kotlinOptions.jvmTarget = JavaVersion.VERSION_1_8.toString()
-    kotlinOptions.allWarningsAsErrors = true
 }
 
 tasks.test {
@@ -53,17 +50,6 @@ tasks.jacocoTestReport {
     reports {
         // Used by Codecov.io
         xml.isEnabled = true
-    }
-}
-
-detekt {
-    failFast = true
-    buildUponDefaultConfig = true
-    config = files("$projectDir/config/detekt/detekt.yml")
-    reports {
-        html.enabled = true
-        xml.enabled = true
-        txt.enabled = true
     }
 }
 
